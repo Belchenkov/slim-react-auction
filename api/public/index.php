@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-use DI\Container;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseFactoryInterface;
 use Slim\Factory\AppFactory;
 
 http_response_code(500);
@@ -19,6 +17,7 @@ $builder->addDefinitions([
     'config' => [
         'debug' => (bool)getenv('APP_DEBUG'),
     ],
+    ResponseFactoryInterface::class => Di\get(Slim\Psr7\Factory\ResponseFactory::class),
 ]);
 
 $container = $builder->build();
@@ -27,9 +26,6 @@ $app = AppFactory::createFromContainer($container);
 
 $app->addErrorMiddleware($container->get('config')['debug'], true, true);
 
-$app->get('/', function (Request $request, Response $response, $args) {
-    $response->getBody()->write('{}');
-    return $response->withHeader('Content-Type', 'application/json');
-});
+$app->get('/', Http\Action\HomeAction::class);
 
 $app->run();
