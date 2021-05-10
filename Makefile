@@ -3,6 +3,7 @@ up: docker-up
 down: docker-down
 restart: down up
 rebuild: down docker-build up
+lint: api-lint
 
 docker-up:
 	docker-compose up -d
@@ -23,6 +24,9 @@ api-init: api-composer-install
 
 api-composer-install:
 	docker-compose run --rm api-php-cli composer install
+
+api-lint:
+	docker-compose run --rm api-php-cli composer lint
 
 build: build-gateway build-frontend build-api
 
