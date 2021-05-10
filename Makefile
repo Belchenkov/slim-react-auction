@@ -3,6 +3,8 @@ up: docker-up
 down: docker-down
 restart: down up
 rebuild: down docker-build up
+lint: api-lint
+analyze: api-analyze
 
 docker-up:
 	docker-compose up -d
@@ -19,10 +21,23 @@ docker-down-clear:
 docker-pull:
 	docker-compose pull
 
-api-init: api-composer-install
+api-init: api-composer-install api-permissions
+
+api-permissions:
+	docker run --rm -v ${PWD}/api:/app -w /app alpine chmod 777 var
 
 api-composer-install:
 	docker-compose run --rm api-php-cli composer install
+
+api-analyze:
+	docker-compose run --rm api-php-cli composer psalm
+
+api-lint:
+	docker-compose run --rm api-php-cli composer lint
+	docker-compose run --rm api-php-cli composer cs-check
+
+api-cs-fix:
+	docker-compose run --rm api-php-cli composer cs-fix
 
 build: build-gateway build-frontend build-api
 

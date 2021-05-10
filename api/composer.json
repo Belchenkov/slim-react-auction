@@ -15,6 +15,9 @@
     "symfony/console": "^5.0"
   },
   "require-dev": {
+    "overtrue/phplint": "^1.2",
+    "squizlabs/php_codesniffer": "^3.5",
+    "vimeo/psalm": "^3.8",
     "roave/security-advisories": "dev-master"
   },
   "autoload": {
@@ -23,6 +26,10 @@
     }
   },
   "scripts": {
+    "lint": "phplint",
+    "cs-check": "phpcs",
+    "cs-fix": "phpcbf",
+    "psalm": "psalm",
     "app": "php bin/app.php --ansi"
   }
 }

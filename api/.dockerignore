@@ -1,5 +1,4 @@
 /.idea
 /vendor
-/var/cache/*
-/var/log/*
-/var/test/*
+/var/.phplint.json
+/var/.phpcs.json
