@@ -11,6 +11,7 @@
         <directory name="config" />
         <directory name="public" />
         <directory name="src" />
+        <directory name="tests" />
         <ignoreFiles>
             <directory name="vendor" />
         </ignoreFiles>
@@ -18,5 +19,12 @@
 
     <issueHandlers>
         <LessSpecificReturnType errorLevel="info" />
+
+        <!-- PHPUnit -->
+        <PropertyNotSetInConstructor>
+            <errorLevel type="suppress">
+                <directory name="tests" />
+            </errorLevel>
+        </PropertyNotSetInConstructor>
     </issueHandlers>
 </psalm>
