@@ -12,6 +12,8 @@
     "slim/psr7": "^0.6.0",
     "slim/slim": "^4.3",
     "php-di/php-di": "^6.0",
+    "ramsey/uuid": "^3.9",
+    "webmozart/assert": "^1.6",
     "symfony/console": "^5.0"
   },
   "require-dev": {
