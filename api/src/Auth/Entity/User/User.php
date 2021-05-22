@@ -12,6 +12,7 @@ class User
     private DateTimeImmutable $date;
     private Email $email;
     private string $passwordHash;
+    private Status $status;
     private ?Token $joinConfirmToken;
 
     public function __construct(
@@ -24,6 +25,7 @@ class User
         $this->id = $id;
         $this->date = $date;
         $this->email = $email;
+        $this->status = Status::wait();
         $this->passwordHash = $passwordHash;
         $this->joinConfirmToken = $token;
     }
@@ -51,5 +53,15 @@ class User
     public function getJoinConfirmToken(): ?Token
     {
         return $this->joinConfirmToken;
+    }
+
+    public function isWait(): bool
+    {
+        return $this->status->isWait();
+    }
+
+    public function isActive(): bool
+    {
+        return $this->status->isActive();
     }
 }
