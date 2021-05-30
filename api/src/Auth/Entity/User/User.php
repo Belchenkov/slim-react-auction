@@ -21,6 +21,7 @@ class User
     private ?Token $passwordResetToken = null;
     private ?Email $newEmail = null;
     private ?Token $newEmailToken = null;
+    private Role $role;
 
     private function __construct(Id $id, DateTimeImmutable $date, Email $email, Status $status)
     {
@@ -28,6 +29,7 @@ class User
         $this->date = $date;
         $this->email = $email;
         $this->status = $status;
+        $this->role = Role::user();
         $this->networks = new ArrayObject();
     }
 
@@ -123,6 +125,11 @@ class User
         $this->passwordHash = $hasher->hash($new);
     }
 
+    public function changeRole(Role $role): void
+    {
+        $this->role = $role;
+    }
+
     public function confirmEmailChanging(string $token, DateTimeImmutable $date): void
     {
         if ($this->newEmail === null || $this->newEmailToken === null) {
@@ -191,5 +198,10 @@ class User
     public function getPasswordResetToken(): ?Token
     {
         return $this->passwordResetToken;
+    }
+
+    public function getRole(): Role
+    {
+        return $this->role;
     }
 }
