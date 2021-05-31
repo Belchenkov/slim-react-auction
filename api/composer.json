@@ -11,6 +11,7 @@
     "ext-json": "^7.4",
     "slim/psr7": "^0.6.0",
     "slim/slim": "^4.3",
+    "doctrine/orm": "^2.7",
     "php-di/php-di": "^6.0",
     "ramsey/uuid": "^3.9",
     "webmozart/assert": "^1.6",
