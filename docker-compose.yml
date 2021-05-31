@@ -47,3 +47,16 @@ services:
     volumes:
       - ./api:/app
     tty: true
+  api-postgres:
+    image: postgres:14-alpine
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: app
+    volumes:
+      - api-postgres:/var/lib/postgresql/data
+    ports:
+      - "54321:5432"
+
+volumes:
+  api-postgres:
