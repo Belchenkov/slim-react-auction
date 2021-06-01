@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\UnderscoreNamingStrategy;
 use Doctrine\ORM\Tools\Setup;
+use Doctrine\DBAL\Types\Type;
 use Psr\Container\ContainerInterface;
 
 return [
@@ -36,6 +37,12 @@ return [
 
         $config->setNamingStrategy(new UnderscoreNamingStrategy());
 
+        foreach ($settings['types'] as $name => $class) {
+            if (!Type::hasType($name)) {
+                Type::addType($name, $class);
+            }
+        }
+
         return EntityManager::create(
             $settings['connection'],
             $config
@@ -54,7 +61,12 @@ return [
                 'dbname' => getenv('DB_NAME'),
                 'charset' => 'utf-8'
             ],
-            'metadata_dirs' => [],
+            'metadata_dirs' => [
+                __DIR__ . '/../../src/Auth/Entity'
+            ],
+            'types' => [
+                Auth\Entity\User\IdType::NAME => Auth\Entity\User\IdType::class,
+            ],
         ],
     ],
 ];
