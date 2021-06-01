@@ -17,11 +17,11 @@ class User
     private ?string $passwordHash = null;
     private Status $status;
     private ?Token $joinConfirmToken = null;
-    private ArrayObject $networks;
     private ?Token $passwordResetToken = null;
     private ?Email $newEmail = null;
     private ?Token $newEmailToken = null;
     private Role $role;
+    private ArrayObject $networks;
 
     private function __construct(Id $id, DateTimeImmutable $date, Email $email, Status $status)
     {
@@ -37,10 +37,10 @@ class User
         Id $id,
         DateTimeImmutable $date,
         Email $email,
-        NetworkIdentity $identity
+        Network $network
     ): self {
         $user = new self($id, $date, $email, Status::active());
-        $user->networks->append($identity);
+        $user->networks->append($network);
         return $user;
     }
 
@@ -57,21 +57,6 @@ class User
         return $user;
     }
 
-    public function requestEmailChanging(Token $token, DateTimeImmutable $date, Email $email): void
-    {
-        if (!$this->isActive()) {
-            throw new DomainException('User is not active.');
-        }
-        if ($this->email->isEqualTo($email)) {
-            throw new DomainException('Email is already same.');
-        }
-        if ($this->newEmailToken !== null && !$this->newEmailToken->isExpiredTo($date)) {
-            throw new DomainException('Changing is already requested.');
-        }
-        $this->newEmail = $email;
-        $this->newEmailToken = $token;
-    }
-
     public function confirmJoin(string $token, DateTimeImmutable $date): void
     {
         if ($this->joinConfirmToken === null) {
@@ -82,15 +67,15 @@ class User
         $this->joinConfirmToken = null;
     }
 
-    public function attachNetwork(NetworkIdentity $identity): void
+    public function attachNetwork(Network $network): void
     {
-        /** @var NetworkIdentity $existing */
+        /** @var Network $existing */
         foreach ($this->networks as $existing) {
-            if ($existing->isEqualTo($identity)) {
+            if ($existing->isEqualTo($network)) {
                 throw new DomainException('Network is already attached.');
             }
         }
-        $this->networks->append($identity);
+        $this->networks->append($network);
     }
 
     public function requestPasswordReset(Token $token, DateTimeImmutable $date): void
@@ -125,9 +110,19 @@ class User
         $this->passwordHash = $hasher->hash($new);
     }
 
-    public function changeRole(Role $role): void
+    public function requestEmailChanging(Token $token, DateTimeImmutable $date, Email $email): void
     {
-        $this->role = $role;
+        if (!$this->isActive()) {
+            throw new DomainException('User is not active.');
+        }
+        if ($this->email->isEqualTo($email)) {
+            throw new DomainException('Email is already same.');
+        }
+        if ($this->newEmailToken !== null && !$this->newEmailToken->isExpiredTo($date)) {
+            throw new DomainException('Changing is already requested.');
+        }
+        $this->newEmail = $email;
+        $this->newEmailToken = $token;
     }
 
     public function confirmEmailChanging(string $token, DateTimeImmutable $date): void
@@ -139,6 +134,11 @@ class User
         $this->email = $this->newEmail;
         $this->newEmail = null;
         $this->newEmailToken = null;
+    }
+
+    public function changeRole(Role $role): void
+    {
+        $this->role = $role;
     }
 
     public function remove(): void
@@ -173,14 +173,9 @@ class User
         return $this->email;
     }
 
-    public function getNewEmail(): ?Email
+    public function getRole(): Role
     {
-        return $this->newEmail;
-    }
-
-    public function getNewEmailToken(): ?Token
-    {
-        return $this->newEmailToken;
+        return $this->role;
     }
 
     public function getPasswordHash(): ?string
@@ -193,22 +188,27 @@ class User
         return $this->joinConfirmToken;
     }
 
-    /**
-     * @return NetworkIdentity[]
-     */
-    public function getNetworks(): array
-    {
-        /** @var NetworkIdentity[] */
-        return $this->networks->getArrayCopy();
-    }
-
     public function getPasswordResetToken(): ?Token
     {
         return $this->passwordResetToken;
     }
 
-    public function getRole(): Role
+    public function getNewEmail(): ?Email
     {
-        return $this->role;
+        return $this->newEmail;
+    }
+
+    public function getNewEmailToken(): ?Token
+    {
+        return $this->newEmailToken;
+    }
+
+    /**
+     * @return Network[]
+     */
+    public function getNetworks(): array
+    {
+        /** @var Network[] */
+        return $this->networks->getArrayCopy();
     }
 }
