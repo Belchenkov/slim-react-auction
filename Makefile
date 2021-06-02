@@ -44,11 +44,11 @@ api-composer-update:
 api-orm-validate-schema:
 	docker-compose run --rm api-php-cli composer app orm:validate-schema
 
-api-migrations-migrate:
-	docker-compose run --rm api-php-cli composer app migrations:migrate
-
 api-migrations-diff:
 	docker-compose run --rm api-php-cli composer app migrations:diff
+
+api-migrations-migrate:
+	docker-compose run --rm api-php-cli composer app migrations:migrate
 
 api-lint:
 	docker-compose run --rm api-php-cli composer lint
