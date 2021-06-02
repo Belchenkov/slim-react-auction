@@ -41,6 +41,9 @@ api-composer-install:
 api-composer-update:
 	docker-compose run --rm api-php-cli composer update
 
+api-orm-validate-schema:
+	docker-compose run --rm api-php-cli composer app orm:validate-schema
+
 api-lint:
 	docker-compose run --rm api-php-cli composer lint
 	docker-compose run --rm api-php-cli composer cs-check
