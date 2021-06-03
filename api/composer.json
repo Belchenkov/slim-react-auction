@@ -20,6 +20,7 @@
     "symfony/console": "^5.0"
   },
   "require-dev": {
+    "doctrine/data-fixtures": "^1.4",
     "overtrue/phplint": "^1.2",
     "phpunit/phpunit": "^9.5",
     "roave/security-advisories": "dev-master",
