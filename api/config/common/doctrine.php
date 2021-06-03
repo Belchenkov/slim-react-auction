@@ -8,6 +8,8 @@ use Doctrine\Common\Cache\FilesystemCache;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\UnderscoreNamingStrategy;
+use Doctrine\Common\EventManager;
+use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\DBAL\Types\Type;
 use Psr\Container\ContainerInterface;
@@ -22,6 +24,7 @@ return [
          *     proxy_dir:string,
          *     cache_dir:?string,
          *     types:array<string,string>,
+         *     subscribers:string[],
          *     connection:array
          * } $settings
          */
@@ -43,9 +46,18 @@ return [
             }
         }
 
+        $eventManager = new EventManager();
+
+        foreach ($settings['subscribers'] as $name) {
+            /** @var EventSubscriber $subscriber */
+            $subscriber = $container->get($name);
+            $eventManager->addEventSubscriber($subscriber);
+        }
+
         return EntityManager::create(
             $settings['connection'],
-            $config
+            $config,
+            $eventManager
         );
     },
 
