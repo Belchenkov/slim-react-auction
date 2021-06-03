@@ -2,9 +2,10 @@ init: docker-down-clear api-clear docker-pull docker-build docker-up api-init
 up: docker-up
 down: docker-down
 restart: down up
-check: lint analyze test
+check: lint analyze validate-schema test
 lint: api-lint
 analyze: api-analyze
+validate-schema: api-validate-schema
 test: api-test
 test-coverage: api-test-coverage
 test-unit: api-test-unit
@@ -41,7 +42,7 @@ api-composer-install:
 api-composer-update:
 	docker-compose run --rm api-php-cli composer update
 
-api-orm-validate-schema:
+api-validate-schema:
 	docker-compose run --rm api-php-cli composer app orm:validate-schema
 
 api-migrations-diff:
@@ -49,6 +50,9 @@ api-migrations-diff:
 
 api-migrations-migrate:
 	docker-compose run --rm api-php-cli composer app migrations:migrate
+
+api-wait-db:
+	docker-compose run --rm api-php-cli wait-for-it api-postgres:5432 -t 30
 
 api-lint:
 	docker-compose run --rm api-php-cli composer lint
