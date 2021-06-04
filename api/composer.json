@@ -9,14 +9,18 @@
   "require": {
     "php": "^7.4",
     "ext-json": "^7.4",
+    "doctrine/migrations": "^2.2",
     "slim/psr7": "^0.6.0",
     "slim/slim": "^4.3",
+    "doctrine/orm": "^2.7",
+    "laminas/laminas-config-aggregator": "^1.2",
     "php-di/php-di": "^6.0",
     "ramsey/uuid": "^3.9",
     "webmozart/assert": "^1.6",
     "symfony/console": "^5.0"
   },
   "require-dev": {
+    "doctrine/data-fixtures": "^1.4",
     "overtrue/phplint": "^1.2",
     "phpunit/phpunit": "^9.5",
     "roave/security-advisories": "dev-master",
