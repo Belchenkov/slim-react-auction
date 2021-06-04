@@ -13,6 +13,7 @@
     "slim/psr7": "^1.0",
     "slim/slim": "^4.3",
     "swiftmailer/swiftmailer": "^6.2",
+    "finesse/swiftmailer-defaults-plugin": "^2.0",
     "doctrine/orm": "^2.7",
     "laminas/laminas-config-aggregator": "^1.2",
     "php-di/php-di": "^6.0",
