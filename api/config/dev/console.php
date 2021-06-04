@@ -33,6 +33,7 @@ return [
                 SchemaTool\DropCommand::class,
 
                 Migrations\Tools\Console\Command\DiffCommand::class,
+                Migrations\Tools\Console\Command\MigrateCommand::class,
                 Migrations\Tools\Console\Command\GenerateCommand::class,
             ],
             'fixture_paths' => [
