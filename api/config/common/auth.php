@@ -7,6 +7,7 @@ use App\Auth\Entity\User\User;
 use App\Auth\Entity\User\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
+use App\Auth\Service\JoinConfirmationSender;
 use Psr\Container\ContainerInterface;
 
 return [
@@ -16,5 +17,17 @@ return [
         /** @var EntityRepository $repo */
         $repo = $em->getRepository(User::class);
         return new UserRepository($em, $repo);
+    },
+
+    JoinConfirmationSender::class => function (ContainerInterface $container): JoinConfirmationSender {
+        /** @var Swift_Mailer $mailer */
+        $mailer = $container->get(Swift_Mailer::class);
+        /**
+         * @psalm-suppress MixedArrayAccess
+         * @psalm-var array{from:array} $mailerConfig
+         */
+        $mailerConfig = $container->get('config')['mailer'];
+
+        return new JoinConfirmationSender($mailer, $mailerConfig['from']);
     },
 ];
