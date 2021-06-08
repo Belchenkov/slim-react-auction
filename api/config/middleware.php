@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-use Psr\Container\ContainerInterface;
 use Slim\App;
+use App\Http\Middleware;
+use Slim\Middleware\ErrorMiddleware;
 
-return static function (App $app, ContainerInterface $container): void {
-    /** @psalm-var array{debug:bool,env:string} */
-    $config = $container->get('config');
-
-    $app->addErrorMiddleware($config['debug'], $config['env'] !== 'test', true);
+return static function (App $app): void {
+    $app->add(Middleware\DomainExceptionHandler::class);
+    $app->add(Middleware\ClearEmptyInput::class);
+    $app->addBodyParsingMiddleware();
+    $app->add(ErrorMiddleware::class);
 };

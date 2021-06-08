@@ -10,16 +10,23 @@
     "php": "^7.4",
     "ext-json": "^7.4",
     "doctrine/migrations": "^2.2",
-    "slim/psr7": "^0.6.0",
+    "slim/psr7": "^1.0",
     "slim/slim": "^4.3",
+    "sentry/sdk": "^2.1",
+    "swiftmailer/swiftmailer": "^6.2",
+    "finesse/swiftmailer-defaults-plugin": "^2.0",
     "doctrine/orm": "^2.7",
     "laminas/laminas-config-aggregator": "^1.2",
     "php-di/php-di": "^6.0",
     "ramsey/uuid": "^3.9",
+    "monolog/monolog": "^2.0",
+    "twig/twig": "^3.0",
     "webmozart/assert": "^1.6",
     "symfony/console": "^5.0"
   },
   "require-dev": {
+    "dms/phpunit-arraysubset-asserts": "^0.2.0",
+    "guzzlehttp/guzzle": "^6.5",
     "doctrine/data-fixtures": "^1.4",
     "overtrue/phplint": "^1.2",
     "phpunit/phpunit": "^9.5",
@@ -43,7 +50,7 @@
     "cs-fix": "phpcbf",
     "psalm": "psalm",
     "test": "phpunit --colors=always",
-    "test-coverage": "phpunit --colors=always --coverage-html var/coverage",
+    "test-coverage": "phpunit --colors=always --coverage-html var/test/coverage",
     "app": "php bin/app.php --ansi"
   }
 }
