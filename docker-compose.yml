@@ -18,6 +18,16 @@ services:
       context: frontend/docker/development/nginx
     volumes:
       - ./frontend:/app
+    depends_on:
+      - frontend-node
+
+  frontend-node:
+    build:
+      context: frontend/docker/development/node
+    volumes:
+      - ./frontend:/app
+    command: yarn start
+    tty: true
 
   frontend-node-cli:
     build:
