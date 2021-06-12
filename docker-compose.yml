@@ -23,6 +23,8 @@ services:
       context: frontend/docker/development/node
     volumes:
       - ./frontend:/app
+    tty: true
+
   api:
     build:
       context: api/docker
