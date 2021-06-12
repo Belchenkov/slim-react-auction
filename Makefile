@@ -6,7 +6,7 @@ up: docker-up
 down: docker-down
 restart: down up
 check: lint analyze validate-schema test
-lint: api-lint
+lint: api-lint frontend-lint
 analyze: api-analyze
 validate-schema: api-validate-schema
 test: api-test api-fixtures frontend-test
@@ -101,6 +101,9 @@ frontend-test:
 
 frontend-test-watch:
 	docker-compose run --rm frontend-node-cli yarn test
+
+frontend-lint:
+	docker-compose run --rm frontend-node-cli yarn lint
 
 build: build-gateway build-frontend build-api
 
