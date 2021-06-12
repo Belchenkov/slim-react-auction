@@ -18,6 +18,7 @@ services:
       context: frontend/docker/development/nginx
     volumes:
       - ./frontend:/app
+
   frontend-node-cli:
     build:
       context: frontend/docker/development/node
