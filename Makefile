@@ -1,12 +1,15 @@
-init: docker-down-clear api-clear docker-pull docker-build docker-up api-init
+init: docker-down-clear \
+	api-clear frontend-clear \
+	docker-pull docker-build docker-up \
+	api-init frontend-init
 up: docker-up
 down: docker-down
 restart: down up
 check: lint analyze validate-schema test
-lint: api-lint
+lint: api-lint frontend-lint
 analyze: api-analyze
 validate-schema: api-validate-schema
-test: api-test api-fixtures
+test: api-test api-fixtures frontend-test
 test-coverage: api-test-coverage
 test-unit: api-test-unit
 test-unit-coverage: api-test-unit-coverage
@@ -81,6 +84,33 @@ api-test-functional:
 
 api-test-functional-coverage:
 	docker-compose run --rm api-php-cli composer test-coverage -- --testsuite=functional
+
+frontend-clear:
+	docker run --rm -v ${PWD}/frontend:/app -w /app alpine sh -c 'rm -rf .ready build'
+
+frontend-init: frontend-yarn-install frontend-ready
+
+frontend-yarn-install:
+	docker-compose run --rm frontend-node-cli yarn install
+
+frontend-ready:
+	docker run --rm -v ${PWD}/frontend:/app -w /app alpine touch .ready
+
+frontend-test:
+	docker-compose run --rm frontend-node-cli yarn test --watchAll=false
+
+frontend-test-watch:
+	docker-compose run --rm frontend-node-cli yarn test
+
+frontend-pretty:
+	docker-compose run --rm frontend-node-cli yarn prettier
+
+frontend-lint:
+	docker-compose run --rm frontend-node-cli yarn eslint
+	docker-compose run --rm frontend-node-cli yarn stylelint
+
+frontend-eslint-fix:
+	docker-compose run --rm frontend-node-cli yarn eslint-fix
 
 build: build-gateway build-frontend build-api
 
