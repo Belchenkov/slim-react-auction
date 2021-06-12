@@ -1,6 +1,6 @@
-import React from 'react';
+import React from 'react'
 
-import styles from './Welcome.module.css';
+import styles from './Welcome.module.css'
 
 function Welcome() {
   return (
@@ -8,7 +8,7 @@ function Welcome() {
       <h1>Auction</h1>
       <p>We will be here soon</p>
     </div>
-  );
+  )
 }
 
-export default Welcome;
+export default Welcome

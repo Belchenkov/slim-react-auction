@@ -105,6 +105,9 @@ frontend-test-watch:
 frontend-lint:
 	docker-compose run --rm frontend-node-cli yarn lint
 
+frontend-lint-fix:
+	docker-compose run --rm frontend-node-cli yarn lint-fix
+
 build: build-gateway build-frontend build-api
 
 build-gateway:
